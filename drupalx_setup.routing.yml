@@ -5,3 +5,5 @@ drupalx_setup.setup_form:
     _title: 'DrupalX Setup'
   requirements:
     _permission: 'access content'
+  options:
+    _admin_route: TRUE
