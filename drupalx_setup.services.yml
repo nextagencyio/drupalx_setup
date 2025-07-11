@@ -1,0 +1,6 @@
+services:
+  drupalx_setup.route_subscriber:
+    class: Drupal\drupalx_setup\EventSubscriber\DrupalxSetupRouteSubscriber
+    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }

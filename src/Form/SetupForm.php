@@ -14,6 +14,7 @@ use Drupal\Core\Recipe\Recipe;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -108,6 +109,15 @@ class SetupForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // Check if the user has admin permissions to access setup.
+    $current_user = \Drupal::currentUser();
+    if (!$current_user->hasPermission('administer site configuration')) {
+      // Redirect non-admin users to /user.
+      $response = new RedirectResponse(Url::fromRoute('user.page')->toString());
+      $response->send();
+      exit();
+    }
+
     // Check if the setup has already been completed.
     if ($this->state->get('drupalx_setup.completed')) {
       return $this->alreadyCompletedForm();
